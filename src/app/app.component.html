@@ -1,6 +1,7 @@
 <div class="example-boundary container" id='example-boundary'>
   <canvas id='example' #example width="200" height="200">Refresh Browser</canvas>
   <div cdkDragBoundary=".example-boundary" cdkDrag id='imgContainer' (cdkDragEnded)="onDragEnded($event)"
+  (cdkDragStarted)="onDragStart($event)"
     (resized)="onResized($event)">
     <img src="{{src}}" alt="" id='img' cdkDragHandle>
   </div>

@@ -25,9 +25,12 @@ export class AppComponent {
   }
  
 
-  public onDragEnded(event): void {
+   onDragEnded(event): void {
     this.x = event.source.getFreeDragPosition().x;
     this.y = event.source.getFreeDragPosition().y;
+  }
+   onDragStart(event): void {
+    this.clearCanvas();
   }
 
   cutImg() {
@@ -70,17 +73,21 @@ export class AppComponent {
 
 
   loadImg() {
-    var example = document.getElementById("example") as HTMLCanvasElement,
-    ctx = example.getContext('2d');
+    
     this.src = '';
-    this.canvasSrc = '';
-    ctx.clearRect(0, 0, 200, 200);
+    this.clearCanvas();
     var inp = document.getElementById("inp") as HTMLInputElement;
     var reader = new FileReader();
     reader.readAsDataURL(inp.files[0]);
     reader.onload = event => {
       this.src = event.target.result.toString()
     }
+  }
+  private clearCanvas() {
+    var example = document.getElementById("example") as HTMLCanvasElement,
+    ctx = example.getContext('2d');
+    this.canvasSrc = '';
+    ctx.clearRect(0, 0, 200, 200);
   }
 
 
