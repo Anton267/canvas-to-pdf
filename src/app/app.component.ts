@@ -19,8 +19,6 @@ export class AppComponent {
   src: string;
   canvasSrc: string;
 
-
-
   onResized(event: ResizedEvent) {
     this.width = event.newWidth;
     this.height = event.newHeight;
@@ -49,9 +47,9 @@ export class AppComponent {
     let x = -this.x || 0;
     let y = -this.y || 0;
 
-    let left = cont.offsetLeft + 11 - x - ex.offsetLeft -300;
-    let top = cont.offsetTop + 11 - y - ex.offsetTop -100;
-   
+    let left = cont.offsetLeft + 5 - x - ex.offsetLeft -300;
+    let top = cont.offsetTop + 5 - y - ex.offsetTop -100;
+
     pic.onload = () => {
       ctx.clearRect(0, 0, 200, 200);
       ctx.drawImage(pic, left, top, pic.width, pic.height);
@@ -72,7 +70,11 @@ export class AppComponent {
 
 
   loadImg() {
+    var example = document.getElementById("example") as HTMLCanvasElement,
+    ctx = example.getContext('2d');
     this.src = '';
+    this.canvasSrc = '';
+    ctx.clearRect(0, 0, 200, 200);
     var inp = document.getElementById("inp") as HTMLInputElement;
     var reader = new FileReader();
     reader.readAsDataURL(inp.files[0]);
