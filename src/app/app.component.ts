@@ -79,10 +79,10 @@ export class AppComponent implements OnInit {
     let yy = top - 100;
 
     pic.onload = () => {
-      ctx.clearRect(0, 0, 200, 200)
-      ctx.drawImage(pic, xx, yy, pic.width, pic.height)
+      ctx.clearRect(0, 0, 200, 200);
+      ctx.drawImage(pic, xx, yy, pic.width, pic.height);
+      this.canvasSrc = example.toDataURL();
     }
-    this.canvasSrc = example.toDataURL()
     pic.src = img.src;
 
   }
