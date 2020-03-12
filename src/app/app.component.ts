@@ -22,6 +22,7 @@ export class AppComponent {
   onResized(event: ResizedEvent) {
     this.width = event.newWidth;
     this.height = event.newHeight;
+    this.clearCanvas();
   }
  
 
