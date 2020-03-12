@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 
 import { ResizedEvent } from 'angular-resize-event';
 
@@ -10,7 +10,7 @@ import * as jsPDF from 'jspdf'
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
- 
+
   width: number;
   height: number;
   x: number;
@@ -19,29 +19,28 @@ export class AppComponent {
   src: string;
   canvasSrc: string;
 
+  @ViewChild('canvas', { static: true }) canvas;
+  @ViewChild('container', { static: true }) container;
+
   onResized(event: ResizedEvent) {
     this.width = event.newWidth;
     this.height = event.newHeight;
     this.clearCanvas();
   }
- 
 
-   onDragEnded(event): void {
+  onDragEnded(event): void {
     this.x = event.source.getFreeDragPosition().x;
     this.y = event.source.getFreeDragPosition().y;
   }
-   onDragStart(event): void {
+
+  onDragStart(): void {
     this.clearCanvas();
   }
 
   cutImg() {
-
-    var example = document.getElementById("example") as HTMLCanvasElement,
-      ctx = example.getContext('2d');
-
-    var img = document.getElementById("img") as HTMLImageElement;
-    var cont = document.getElementById("imgContainer") as HTMLDivElement;
-    var ex = document.getElementById("example-boundary") as HTMLDivElement;
+    let ctx = this.canvas.nativeElement.getContext('2d');
+    let img = document.getElementById("img") as HTMLImageElement;
+    let imgContainer = document.getElementById("imgContainer") as HTMLDivElement;
 
     let pic = new Image();
 
@@ -51,45 +50,56 @@ export class AppComponent {
     let x = -this.x || 0;
     let y = -this.y || 0;
 
-    let left = cont.offsetLeft + 5 - x - ex.offsetLeft -300;
-    let top = cont.offsetTop + 5 - y - ex.offsetTop -100;
+    let left = imgContainer.offsetLeft + 5 - x - this.container.nativeElement.offsetLeft - 300;
+    let top = imgContainer.offsetTop + 5 - y - this.container.nativeElement.offsetTop - 100;
 
     pic.onload = () => {
       ctx.clearRect(0, 0, 200, 200);
       ctx.drawImage(pic, left, top, pic.width, pic.height);
-      this.canvasSrc = example.toDataURL();
+      this.canvasSrc = this.canvas.nativeElement.toDataURL();
       this.savePdf()
     }
     pic.src = img.src;
-
-  }
-  
-
-  private savePdf() {
-    var doc = new jsPDF();
-    var example = document.getElementById("example") as HTMLCanvasElement,
-      ctx = example.getContext('2d');
-    doc.addImage(this.canvasSrc, 'JPEG',  0, 0, 100, 100)
-    doc.save('a4.pdf')
   }
 
+  @HostListener('dragenter') dragenter() {
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      this.container.nativeElement.addEventListener(eventName, this.preventDefaults, false)
+    })
+  }
 
-  loadImg() {
-    
-    this.src = '';
-    this.clearCanvas();
-    var inp = document.getElementById("inp") as HTMLInputElement;
-    var reader = new FileReader();
-    reader.readAsDataURL(inp.files[0]);
+  loadImg(event) {
+    let reader = new FileReader();
+
+    if (event.type == 'drop') {
+      let dt = event.dataTransfer
+      reader.readAsDataURL(dt.files[0]);
+    } else {
+      let inp = document.getElementById("inp") as HTMLInputElement;
+      reader.readAsDataURL(inp.files[0]);
+    }
     reader.onload = event => {
       this.src = event.target.result.toString()
     }
+    this.src = '';
+    this.clearCanvas();
   }
+
   private clearCanvas() {
-    var example = document.getElementById("example") as HTMLCanvasElement,
-    ctx = example.getContext('2d');
+    let ctx = this.canvas.nativeElement.getContext('2d');
     this.canvasSrc = '';
     ctx.clearRect(0, 0, 200, 200);
+  }
+
+  private savePdf() {
+    let doc = new jsPDF();
+    doc.addImage(this.canvasSrc, 'JPEG', 0, 0, 100, 100)
+    doc.save('img.pdf')
+  }
+
+  private preventDefaults(e) {
+    e.preventDefault()
+    e.stopPropagation()
   }
 
 
