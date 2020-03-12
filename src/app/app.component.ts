@@ -58,13 +58,14 @@ export class AppComponent {
       ctx.clearRect(0, 0, 200, 200);
       ctx.drawImage(pic, left, top, pic.width, pic.height);
       this.canvasSrc = example.toDataURL();
+      this.savePdf()
     }
     pic.src = img.src;
 
   }
   
 
-  savePdf() {
+  private savePdf() {
     var doc = new jsPDF();
     var example = document.getElementById("example") as HTMLCanvasElement,
       ctx = example.getContext('2d');
