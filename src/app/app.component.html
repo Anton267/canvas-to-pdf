@@ -1,36 +1,23 @@
-
-  
-
-<div class="example-boundary container" id='example-boundary' >
-
-  <canvas id='example' #example width="200" height="200" >Обновите браузер</canvas>
-
-  <div  cdkDragBoundary=".example-boundary" cdkDrag id='imgContainer' (cdkDragEnded) = "onDragEnded($event)" (resized)="onResized($event)" >
-    <img src="{{src}}" alt="" id='img'  cdkDragHandle 
-    > 
+<div class="example-boundary container" id='example-boundary'>
+  <canvas id='example' #example width="200" height="200">Refresh Browser</canvas>
+  <div cdkDragBoundary=".example-boundary" cdkDrag id='imgContainer' (cdkDragEnded)="onDragEnded($event)"
+    (resized)="onResized($event)">
+    <img src="{{src}}" alt="" id='img' cdkDragHandle>
   </div>
-   
-
 </div>
-<br>
-<br>
-<div class="container">
 
-<button mat-stroked-button (click)="fileInput.click()">
-  <span>Select image</span>
-  <input #fileInput type="file" (change)=" aa()" style="display:none;" id='inp'>
-</button>
+<div class="container container__bottom">
+  <button mat-stroked-button (click)="fileInput.click()">
+    <span>Select image</span>
+    <input #fileInput type="file" (change)="loadImg()" style="display:none;" id='inp'>
+  </button>
 
-<br>
-<br>
-<button mat-stroked-button color="primary" (click)='cutImg()'>
-  Cut
-</button>
-<br>
-<br>
+  <button mat-stroked-button color="primary" (click)='cutImg()'>
+    Cut
+  </button>
 
-<button mat-stroked-button color="primary" (click)='savePdf()'>
-  Save in pdf
-</button>
+  <button mat-stroked-button color="primary" (click)='savePdf()'>
+    Save in pdf
+  </button>
 
 </div>
