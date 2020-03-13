@@ -12,7 +12,11 @@
   <button mat-stroked-button (click)="fileInput.click()">
     <span>Select image</span>
     <input #fileInput type="file" (change)="loadImg($event)" style="display:none;" id='inp' accept="image/*" >
-  </button>
+  </button> or drag <mat-icon class='icon'>double_arrow</mat-icon>
+
+
+
+  <br>
 
   <button mat-stroked-button color="primary" (click)='cutImg()'>
     Save in pdf

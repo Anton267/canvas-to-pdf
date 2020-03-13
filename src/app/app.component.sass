@@ -31,4 +31,16 @@ img
 button 
     height: 40px
     margin-top: 20px
-    display: block
+
+.icon
+    transform: rotate(270deg)
+    position: relative
+    animation: .5s linear 0s infinite alternate move_icon
+
+@keyframes move_icon
+    0%
+        top: 0px
+        
+    100%
+        top: -15px
+        
